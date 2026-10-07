@@ -1,0 +1,150 @@
+@import 'tailwindcss';
+@import 'tw-animate-css';
+@import 'shadcn/tailwind.css';
+
+@theme inline {
+  --font-sans: var(--font-instrument-sans);
+  --font-serif: var(--font-instrument-serif);
+  --font-mono: var(--font-jetbrains-mono);
+
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  --color-accent-hover: var(--accent-hover);
+  --color-accent-text: var(--accent-text);
+  --color-done: var(--status-done);
+  --color-progress: var(--status-progress);
+  --color-pending: var(--status-pending);
+
+  --radius-sm: 4px;
+  --radius-md: var(--radius);
+  --radius-lg: var(--radius);
+  --radius-xl: var(--radius);
+}
+
+:root {
+  color-scheme: light;
+  --radius: 6px;
+
+  /* paper, ink, muted, line, hover surface */
+  --background: #f7f5f0;
+  --foreground: #1a1a18;
+  --card: #f7f5f0;
+  --card-foreground: #1a1a18;
+  --popover: #f7f5f0;
+  --popover-foreground: #1a1a18;
+  --muted: #efece4;
+  --muted-foreground: #6b6962;
+  --secondary: #efece4;
+  --secondary-foreground: #1a1a18;
+  --border: #e4e0d6;
+  --input: #e4e0d6;
+
+  /* the one accent */
+  --accent: #e8590c;
+  --accent-foreground: #1a1a18;
+  --accent-hover: #e15510;
+  --accent-text: #c2410c;
+  --primary: #e8590c;
+  --primary-foreground: #1a1a18;
+  --ring: #e8590c;
+  --destructive: #e8590c;
+
+  --status-done: #3f7d58;
+  --status-progress: #b7791f;
+  --status-pending: #9a978e;
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  html {
+    scroll-padding-top: 72px;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    html {
+      scroll-behavior: smooth;
+    }
+  }
+
+  body {
+    @apply bg-background font-sans text-foreground antialiased;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+  }
+}
+
+@layer components {
+  /* shared row treatment: surface shift + orange line growing from the left */
+  .row {
+    position: relative;
+    transition: background-color 150ms ease-out;
+  }
+
+  .row::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: -1px;
+    height: 1px;
+    width: 100%;
+    background: var(--accent);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 250ms ease-out;
+  }
+
+  .row:hover,
+  .row:focus-within {
+    background-color: var(--muted);
+  }
+
+  .row:hover::after,
+  .row:focus-within::after {
+    transform: scaleX(1);
+  }
+}
+
+/* reduced motion: render every animated element in its final state */
+@media (prefers-reduced-motion: reduce) {
+  [data-reveal] {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+
+  [data-draw] {
+    stroke-dasharray: none !important;
+    stroke-dashoffset: 0 !important;
+  }
+
+  [data-progress] {
+    transform: none !important;
+  }
+
+  .row,
+  .row::after {
+    transition: none;
+  }
+}
